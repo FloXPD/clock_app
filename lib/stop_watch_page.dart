@@ -24,6 +24,7 @@ String formatTime(int milliseconds) {
 class _StopWatchWidgetState extends State<StopWatchWidget> {
   late Stopwatch _stopwatch;
   late Timer _timer;
+  bool isResetVisible = false;
 
   @override
   void initState() {
@@ -49,10 +50,16 @@ class _StopWatchWidgetState extends State<StopWatchWidget> {
     setState(() {});
   }
 
+  void handleReset() {
+    _stopwatch.reset();
+    _stopwatch.stop();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(100, 100, 100, 100),
+      backgroundColor: Color.fromRGBO(100, 100, 100, 0),
       appBar: AppBar(
         toolbarHeight: 40,
         backgroundColor: Color.fromRGBO(120, 120, 120, 100),
@@ -67,7 +74,7 @@ class _StopWatchWidgetState extends State<StopWatchWidget> {
           child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 150),
+            padding: const EdgeInsets.only(top: 300),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,11 +88,12 @@ class _StopWatchWidgetState extends State<StopWatchWidget> {
                 ]),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
                   onPressed: handleStartStop,
-                  child: Text(_stopwatch.isRunning ? 'Stop' : 'Start'))
+                  child: Text(_stopwatch.isRunning ? 'Stop' : 'Start')),
+              ElevatedButton(onPressed: handleReset, child: Text('Reset')),
             ],
           )
         ],
