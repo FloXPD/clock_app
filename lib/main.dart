@@ -3,9 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'timer_page.dart';
-import 'clock_page.dart';
-import 'stop_watch_page.dart';
+import './timer_page.dart';
+import './clock_page.dart';
+import './stop_watch_page.dart';
 
 void main() {
   runApp(ClockApp());
@@ -26,7 +26,7 @@ class _ClockAppState extends State<ClockApp> {
   static const List<Widget> _widgetOptions = <Widget>[
     ClockWidget(),
     TimerWidget(),
-    //StopWatchWidget(),
+    StopWatchWidget(),
   ];
 
   void _onItemTapped(int index) {

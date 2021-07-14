@@ -1,141 +1,95 @@
-// // ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
 
-// import 'dart:async';
+import 'dart:async';
 
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-// class StopWatchWidget extends StatefulWidget {
-//   const StopWatchWidget({Key? key}) : super(key: key);
+class StopWatchWidget extends StatefulWidget {
+  const StopWatchWidget({Key? key}) : super(key: key);
 
-//   @override
-//   _StopWatchWidgetState createState() => _StopWatchWidgetState();
-// }
+  @override
+  _StopWatchWidgetState createState() => _StopWatchWidgetState();
+}
 
-// Stream<int> stopWatchStream() {
-//   StreamController<int> streamController;
-//   Timer timer;
-//   Duration timerInterval = Duration(seconds: 1);
-//   int counter = 0;
+String formatTime(int milliseconds) {
+  var secs = milliseconds ~/ 1000;
+  var hours = (secs ~/ 3600).toString().padLeft(2, '0');
+  var minutes = ((secs % 3600) ~/ 60).toString().padLeft(2, '0');
+  var seconds = (secs % 60).toString().padLeft(2, '0');
 
-//   timer;
+  return "$hours:$minutes:$seconds";
+}
 
-//   void stopTimer() {
-//     if (timer != null) {
-//       timer.cancel();
-//       timer = null;
-//       counter = 0;
-//       streamController.close();
-//     }
-//   }
+class _StopWatchWidgetState extends State<StopWatchWidget> {
+  late Stopwatch _stopwatch;
+  late Timer _timer;
 
-//   void tick(_) {
-//     counter++;
-//     streamController.add(counter);
-//   }
+  @override
+  void initState() {
+    super.initState();
+    _stopwatch = Stopwatch();
+    _timer = Timer.periodic(Duration(milliseconds: 30), (timer) {
+      setState(() {});
+    });
+  }
 
-//   void startTimer() {
-//     timer = Timer.periodic(timerInterval, tick);
-//   }
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
-//   streamController = StreamController<int>(
-//     onListen: startTimer,
-//     onCancel: stopTimer,
-//     onResume: startTimer,
-//     onPause: stopTimer,
-//   );
+  void handleStartStop() {
+    if (_stopwatch.isRunning) {
+      _stopwatch.stop();
+    } else {
+      _stopwatch.start();
+    }
+    setState(() {});
+  }
 
-//   return streamController.stream;
-// }
-
-// var hoursStr;
-// var minutesStr;
-// var secondsStr;
-
-// class _StopWatchWidgetState extends State<StopWatchWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         toolbarHeight: 40,
-//         backgroundColor: Color.fromRGBO(120, 120, 120, 100),
-//         leading: Icon(Icons.list, color: Colors.black),
-//         title: Text(
-//           'Stopwatch',
-//           style:
-//               TextStyle(fontFamily: 'JosefinSans', fontWeight: FontWeight.w300),
-//         ),
-//       ),
-//       body: Center(
-//         child: Column(
-//           children: [
-//             Text(
-//               '$hoursStr:$minutesStr:$secondsStr',
-//               style: TextStyle(
-//                   fontFamily: 'JosefinSans',
-//                   fontSize: 70,
-//                   fontWeight: FontWeight.w300,
-//                   color: Colors.lightBlue),
-//             ),
-//             SizedBox(height: 30),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 RaisedButton(
-//                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-//                   onPressed: () {
-//                     timerStream = stopWatchStream();
-//                     timerSubscription = timerStream.listen((int newTick) {
-//                       setState(() {
-//                         hoursStr = ((newTick / (60 * 60)) % 60)
-//                             .floor()
-//                             .toString()
-//                             .padLeft(2, '0');
-//                         minutesStr = ((newTick / 60) % 60)
-//                             .floor()
-//                             .toString()
-//                             .padLeft(2, '0');
-//                         secondsStr =
-//                             (newTick % 60).floor().toString().padLeft(2, '0');
-//                       });
-//                     });
-//                   },
-//                   color: Colors.green,
-//                   child: Text(
-//                     'START',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 40,
-//                 ),
-//                 RaisedButton(
-//                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-//                   onPressed: () {
-//                     timerSubscribtion.cancel();
-//                     timerStream = null;
-//                     setState(() {
-//                       hoursStr = '00';
-//                       minutesStr = '00';
-//                       secondsStr = '00';
-//                     });
-//                   },
-//                   color: Colors.red,
-//                   child: Text(
-//                     'RESET',
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 20,
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(100, 100, 100, 100),
+      appBar: AppBar(
+        toolbarHeight: 40,
+        backgroundColor: Color.fromRGBO(120, 120, 120, 100),
+        leading: Icon(Icons.list, color: Colors.black),
+        title: Text(
+          'Stopwatch',
+          style:
+              TextStyle(fontFamily: 'JosefinSans', fontWeight: FontWeight.w300),
+        ),
+      ),
+      body: SafeArea(
+          child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 150),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(formatTime(_stopwatch.elapsedMilliseconds),
+                      style: TextStyle(
+                          fontFamily: 'JosefinSans',
+                          fontSize: 55,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightBlue[800])),
+                ]),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: handleStartStop,
+                  child: Text(_stopwatch.isRunning ? 'Stop' : 'Start'))
+            ],
+          )
+        ],
+      )),
+    );
+  }
+}
