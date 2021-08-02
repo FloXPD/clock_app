@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import './timer_page.dart';
 import './clock_page.dart';
 import './stop_watch_page.dart';
+import 'alarm_page.dart';
 
 void main() {
   runApp(ClockApp());
@@ -27,6 +28,7 @@ class _ClockAppState extends State<ClockApp> {
     ClockWidget(),
     TimerWidget(),
     StopWatchWidget(),
+    AlarmWidget(),
   ];
 
   void _onItemTapped(int index) {

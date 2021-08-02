@@ -47,7 +47,8 @@ class TimerWidgetState extends State<TimerWidget> {
                   child: Text(
                     'Start',
                     style: TextStyle(color: Colors.lightBlue),
-                  ))
+                  )),
+                
             ],
           )
         ],
