@@ -74,7 +74,7 @@ class _StopWatchWidgetState extends State<StopWatchWidget> {
           child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 300),
+            padding: const EdgeInsets.only(top: 250),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

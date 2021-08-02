@@ -11,7 +11,7 @@ class TimerWidget extends StatefulWidget {
 }
 
 class TimerWidgetState extends State<TimerWidget> {
-  var value = 0;
+  Duration duration = Duration(minutes: 5);
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +32,23 @@ class TimerWidgetState extends State<TimerWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CupertinoTimerPicker(onTimerDurationChanged: (value) {}),
+              CupertinoTimerPicker(
+                initialTimerDuration: duration,
+                mode: CupertinoTimerPickerMode.hms,
+                onTimerDurationChanged: (duration) =>
+                    setState(() => this.duration = duration),
+              ),
             ],
           ),
           Row(
             children: [
               TextButton(
-                onPressed: null,
-                child: Text(
-                  'Start',
-                  style: TextStyle(
-                    color: Colors.lightBlue
-                  ),
-                  )
-              )],
+                  onPressed: null,
+                  child: Text(
+                    'Start',
+                    style: TextStyle(color: Colors.lightBlue),
+                  ))
+            ],
           )
         ],
       ),
